@@ -6,10 +6,13 @@ from django.forms.models import model_to_dict
 from products.serializers import ProductSerializer
 
 # Create your views here.
-@api_view(['GET'])
+@api_view(['POST'])
 def api_view(request, *args, **kwargs):
-    instance = Product.objects.all().order_by('?').first()
-    data = {}
-    if instance:
-        data = ProductSerializer(instance).data
+    data = request.data
+    print(data)
+    serializer = ProductSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=False):
+        data = serializer.data
+        print(data)
+        return Response(data)
     return Response(data)
