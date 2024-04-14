@@ -8,11 +8,8 @@ from products.serializers import ProductSerializer
 # Create your views here.
 @api_view(['POST'])
 def api_view(request, *args, **kwargs):
-    data = request.data
-    print(data)
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid(raise_exception=False):
-        data = serializer.data
-        print(data)
-        return Response(data)
-    return Response(data)
+        instance = serializer.save()
+        print(instance)
+        return Response(serializer.data)
